@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Explainer - Advanced AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              jetbrains: ["JetBrains Mono", "monospace"],
+              orbitron: ["Orbitron", "sans-serif"],
+            },
+            animation: {
+              gradient: "gradient-shift 8s ease infinite",
+              float: "float 6s ease-in-out infinite",
+              "pulse-glow": "pulse-glow 3s ease-in-out infinite",
+              "slide-in-right": "slide-in-right 0.3s ease-out",
+              "scale-in": "scale-in 0.2s ease-out",
+              "bounce-in": "bounce-in 0.6s ease-out",
+            },
+          },
+        },
+      };
+    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"
+    />
+
+    <!-- Theme initialization script to prevent flash -->
+    <script>
+      (function () {
+        try {
+          const theme = localStorage.getItem("theme") || "auto";
+          let isDark = false;
+
+          if (theme === "dark") {
+            isDark = true;
+          } else if (theme === "light") {
+            isDark = false;
+          } else {
+            // Auto mode - check system preference
+            isDark =
+              window.matchMedia &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches;
+          }
+
+          if (isDark) {
+            document.documentElement.classList.add("dark");
+            document.body.classList.add("dark-mode");
+          }
+        } catch (e) {
+          // Fallback to dark mode if there's an error
+          document.documentElement.classList.add("dark");
+          document.body.classList.add("dark-mode");
+        }
+      })();
+    </script>
+    <style>
+      :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --glass-bg: rgba(255, 255, 255, 0.08);
+        --glass-border: rgba(255, 255, 255, 0.18);
+      }
+
+      /* Dark mode CSS variables */
+      .dark {
+        --glass-bg: rgba(0, 0, 0, 0.2);
+        --glass-border: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Advanced scrollbar styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(45deg, #764ba2, #667eea);
+      }
+
+      /* Dark mode scrollbar */
+      .dark ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: linear-gradient(45deg, #4f46e5, #7c3aed);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      /* Glass morphism and advanced styling */
+      .glass {
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Dark mode glass effect */
+      .dark .glass {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Light mode glass effect */
+      body:not(.dark-mode) .glass {
+        background: rgba(255, 255, 255, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      .glow {
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.4),
+          0 0 40px rgba(102, 126, 234, 0.2), 0 0 60px rgba(102, 126, 234, 0.1);
+      }
+
+      /* Advanced animations */
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
+        }
+      }
+
+      @keyframes gradient-shift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .animate-float {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .animate-pulse-glow {
+        animation: pulse-glow 3s ease-in-out infinite;
+      }
+
+      .animate-gradient {
+        background-size: 400% 400%;
+        animation: gradient-shift 8s ease infinite;
+      }
+
+      /* Additional advanced animations */
+      @keyframes slide-in-right {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes scale-in {
+        from {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes bounce-in {
+        0% {
+          transform: scale(0.3);
+          opacity: 0;
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        70% {
+          transform: scale(0.9);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .animate-slide-in-right {
+        animation: slide-in-right 0.3s ease-out;
+      }
+
+      .animate-scale-in {
+        animation: scale-in 0.2s ease-out;
+      }
+
+      .animate-bounce-in {
+        animation: bounce-in 0.6s ease-out;
+      }
+
+      /* Neural network background */
+      .neural-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.1;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        background: linear-gradient(-45deg, #e0f2fe, #f3e5f5, #fff3e0, #e8f5e8);
+        background-size: 400% 400%;
+        animation: gradient-shift 15s ease infinite;
+        color: #1a202c;
+        transition: background 0.3s ease, color 0.3s ease;
+      }
+
+      /* Dark mode body styles */
+      .dark body,
+      body.dark-mode {
+        background: linear-gradient(-45deg, #0f172a, #1e1b4b, #581c87, #7c2d12);
+        color: #f8fafc;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      #root {
+        min-height: 100vh;
+        position: relative;
+      }
+
+      .font-jetbrains {
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      .font-orbitron {
+        font-family: "Orbitron", sans-serif;
+      }
+
+      /* 3D effect classes */
+      .transform-preserve-3d {
+        transform-style: preserve-3d;
+      }
+      .perspective-1000 {
+        perspective: 1000px;
+      }
+
+      /* Keyframes for 3D cube spinner */
+      @keyframes cube-rotate {
+        0% {
+          transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+        }
+        100% {
+          transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+        }
+      }
+      .animate-cube-rotate {
+        animation: cube-rotate 10s infinite linear;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/genai": "https://esm.sh/@google/genai@^1.0.1",
+          "react/": "https://esm.sh/react@^19.1.0/",
+          "react": "https://esm.sh/react@^19.1.0",
+          "react-dom/": "https://esm.sh/react-dom@^19.1.0/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Neural network background -->
+    <div class="neural-bg">
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern
+            id="grid"
+            width="50"
+            height="50"
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d="M 50 0 L 0 0 0 50"
+              fill="none"
+              stroke="rgba(102, 126, 234, 0.1)"
+              stroke-width="1"
+            />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)" />
+      </svg>
+    </div>
+
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

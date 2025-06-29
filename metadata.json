@@ -1,0 +1,6 @@
+{
+  "name": "Code Explainer & Debugger",
+  "description": "An application that analyzes code, detects language, identifies errors, explains them, suggests fixes, and provides a detailed line-by-line explanation. Powered by Gemini API.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
