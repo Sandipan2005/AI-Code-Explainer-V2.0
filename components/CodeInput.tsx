@@ -1,6 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { useNotifications } from './NotificationSystem';
 
+const LANG_MAP: { [key: string]: string } = {
+  'js': 'javascript',
+  'jsx': 'javascript',
+  'ts': 'typescript',
+  'tsx': 'typescript',
+  'py': 'python',
+  'java': 'java',
+  'cpp': 'cpp',
+  'c': 'cpp',
+  'cs': 'csharp',
+  'go': 'go',
+  'rs': 'rust',
+  'php': 'php'
+};
+
+const LANGUAGES = [
+  { value: 'auto', label: '🤖 Auto-detect' },
+  { value: 'javascript', label: '🟨 JavaScript' },
+  { value: 'typescript', label: '🔷 TypeScript' },
+  { value: 'python', label: '🐍 Python' },
+  { value: 'java', label: '☕ Java' },
+  { value: 'cpp', label: '⚙️ C++' },
+  { value: 'csharp', label: '🔵 C#' },
+  { value: 'go', label: '🐹 Go' },
+  { value: 'rust', label: '🦀 Rust' },
+  { value: 'php', label: '🐘 PHP' }
+];
+
+const QUICK_EXAMPLES = [
+  { title: 'Bug Detection', code: 'function buggyCode() {\n  let arr = [1, 2, 3];\n  for (let i = 0; i <= arr.length; i++) {\n    console.log(arr[i]);\n  }\n}' },
+  { title: 'Performance Issues', code: 'function slow() {\n  let result = "";\n  for (let i = 0; i < 1000; i++) {\n    result += "x";\n  }\n  return result;\n}' },
+  { title: 'Best Practices', code: 'var globalVar = "bad";\nfunction messyCode() {\n  if (globalVar == "bad") {\n    return "fix me";\n  }\n}' }
+];
+
 interface CodeInputProps {
   code: string;
   setCode: (code: string) => void;
@@ -81,25 +115,8 @@ export const CodeInput: React.FC<CodeInputProps> = ({ code, setCode, onAnalyze, 
         
         // Auto-detect language from file extension
         const extension = file.name.split('.').pop()?.toLowerCase();
-        if (extension) {
-          const langMap: { [key: string]: string } = {
-            'js': 'javascript',
-            'jsx': 'javascript',
-            'ts': 'typescript',
-            'tsx': 'typescript',
-            'py': 'python',
-            'java': 'java',
-            'cpp': 'cpp',
-            'c': 'cpp',
-            'cs': 'csharp',
-            'go': 'go',
-            'rs': 'rust',
-            'php': 'php'
-          };
-          
-          if (langMap[extension]) {
-            setLanguage(langMap[extension]);
-          }
+        if (extension && LANG_MAP[extension]) {
+          setLanguage(LANG_MAP[extension]);
         }
         
         addNotification({
@@ -121,19 +138,6 @@ export const CodeInput: React.FC<CodeInputProps> = ({ code, setCode, onAnalyze, 
     
     reader.readAsText(file);
   };
-
-  const languages = [
-    { value: 'auto', label: '🤖 Auto-detect' },
-    { value: 'javascript', label: '🟨 JavaScript' },
-    { value: 'typescript', label: '🔷 TypeScript' },
-    { value: 'python', label: '🐍 Python' },
-    { value: 'java', label: '☕ Java' },
-    { value: 'cpp', label: '⚙️ C++' },
-    { value: 'csharp', label: '🔵 C#' },
-    { value: 'go', label: '🐹 Go' },
-    { value: 'rust', label: '🦀 Rust' },
-    { value: 'php', label: '🐘 PHP' }
-  ];
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -220,7 +224,7 @@ export const CodeInput: React.FC<CodeInputProps> = ({ code, setCode, onAnalyze, 
             onChange={(e) => setLanguage(e.target.value)}
             className="px-3 py-2 glass rounded-lg text-sm font-medium text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            {languages.map((lang) => (
+            {LANGUAGES.map((lang) => (
               <option key={lang.value} value={lang.value} className="bg-white dark:bg-gray-800 text-gray-800 dark:text-white">
                 {lang.label}
               </option>
@@ -339,11 +343,7 @@ function example() {
       {/* Quick examples */}
       {!code && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[
-            { title: 'Bug Detection', code: 'function buggyCode() {\n  let arr = [1, 2, 3];\n  for (let i = 0; i <= arr.length; i++) {\n    console.log(arr[i]);\n  }\n}' },
-            { title: 'Performance Issues', code: 'function slow() {\n  let result = "";\n  for (let i = 0; i < 1000; i++) {\n    result += "x";\n  }\n  return result;\n}' },
-            { title: 'Best Practices', code: 'var globalVar = "bad";\nfunction messyCode() {\n  if (globalVar == "bad") {\n    return "fix me";\n  }\n}' }
-          ].map((example) => (
+          {QUICK_EXAMPLES.map((example) => (
             <button
               key={example.title}
               onClick={() => setCode(example.code)}
