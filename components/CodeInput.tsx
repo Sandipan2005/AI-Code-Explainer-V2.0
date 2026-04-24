@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNotifications } from './NotificationSystem';
 
-const LANG_MAP: { [key: string]: string } = {
+const LANG_MAP: Partial<Record<string, string>> = {
   'js': 'javascript',
   'jsx': 'javascript',
   'ts': 'typescript',
